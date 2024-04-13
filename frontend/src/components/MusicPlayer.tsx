@@ -59,7 +59,6 @@ const MusicPlayer: React.FC = () => {
         const playTrack = (track: TrackObject) => {
             fetchYoutubeURL(track).then(elmnt => {
                     console.log(elmnt);
-                    const item = document.getElementById('youtubeIframe');
                     setCurrentYoutubeURL('https://www.youtube.com/embed/' + elmnt+'?autoplay=1');
                     setCurrentTrack(track.url);
                 }
