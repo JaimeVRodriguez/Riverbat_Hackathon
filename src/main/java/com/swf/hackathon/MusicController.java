@@ -50,5 +50,4 @@ public class MusicController {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(stringURL, String.class);
     }
-
 }
