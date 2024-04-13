@@ -1,3 +1,5 @@
 .idea
 .gradle
 *package-lock.json*
+build
+.gradle/*
