@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  postgres-db:
+    container_name: bridge-starter-postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: bridge_dev
+      POSTGRES_PASSWORD: bridge_dev
+      POSTGRES_DB: bridge_db
+      POSTGRES_HOST_AUTH_METHOD: password
+    ports:
+      - 5433:5432
+    volumes:
+      - ./bridge_db_test_init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgresql_data:
+    driver: local
