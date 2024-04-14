@@ -56,10 +56,16 @@ public class MusicController {
     @CrossOrigin
     @GetMapping("/track/album/{mbid}")
     public String getAlbumArt(@PathVariable String mbid) {
-        System.out.println(mbid);
-        String url = "http://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=" + apiKey +
-                "&mbid=" + mbid + "&format=json";
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, String.class);
+       String res = "";
+        try {
+            System.out.println(mbid);
+            String url = "http://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=" + apiKey +
+                    "&mbid=" + mbid + "&format=json";
+            RestTemplate restTemplate = new RestTemplate();
+            res = restTemplate.getForObject(url, String.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+            return res;
     }
 }
