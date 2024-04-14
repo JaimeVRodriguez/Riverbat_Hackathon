@@ -1,8 +1,11 @@
 import {AppBar, Box, Button, Grid, Typography} from "@mui/material";
 import {styleColors} from "../globals/colors.ts";
 import {NavLink} from "react-router-dom";
+import {useLogin} from "../contexts/LoginContext.tsx";
 
 export const AppBarComponent = () => {
+    const {userName, isLoggedIn, logoutFromApp} = useLogin();
+
     return (
         <AppBar position="static" sx={{
             backgroundColor: styleColors.primary500,
@@ -20,11 +23,28 @@ export const AppBarComponent = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={4} sx={{
-                    textAlign: 'end',
                     marginY: 'auto',
-                    paddingRight: '2em'
                 }}>
-                    <Button variant='outlined' color='secondary'><NavLink to='/login'>Login</NavLink></Button>
+
+                    <Grid container sx={{justifyContent: 'end', paddingRight: '2em'}}>
+                        {isLoggedIn ? <> <Grid item sx={{
+                                marginY: 'auto',
+                                paddingRight: '2em'
+                            }}>
+                                <Typography>Welcome, {userName}</Typography>
+                            </Grid>
+                                <Grid item>
+                                    <Button variant='outlined' color='warning' onClick={logoutFromApp} to='/'
+                                            component={NavLink}>Logout</Button>
+                                </Grid></>
+                            :
+                            <Grid item sx={{
+                                marginY: 'auto',
+                            }}>
+                                <Button variant='contained' color='warning' to='/login'
+                                        component={NavLink}>Login</Button>
+                            </Grid>}
+                    </Grid>
                 </Grid>
             </Grid>
 

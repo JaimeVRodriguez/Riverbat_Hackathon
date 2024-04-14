@@ -1,14 +1,14 @@
 import React, {createContext, useContext, useState} from "react";
 
 type LoginContextType = {
-    user: string;
+    userName: string;
     isLoggedIn: boolean;
     loginToApp: (email: string, password: string) => void;
     logoutFromApp: () => void;
 }
 
 const LoginContext = createContext<LoginContextType>({
-    user: '',
+    userName: '',
     isLoggedIn: false,
     loginToApp: () => null,
     logoutFromApp: () => null
@@ -16,11 +16,11 @@ const LoginContext = createContext<LoginContextType>({
 
 const TEST_USERS = [
     {
-        email: "text@mail.com",
-        password: "qwerty"
+        username: "test",
+        password: "test"
     }, {
-        email: "text1@mail.com",
-        password: "qwerty1"
+        username: "test1",
+        password: "test1"
     },
 ];
 
@@ -30,12 +30,14 @@ type Props = {
 
 
 export const LoginProvider = ({children}: Props) => {
-    const [user] = useState<string>('');
+    const [userName, setUserName] = useState<string>('');
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
-    const loginToApp = (email: string, password: string) => {
-        if (TEST_USERS.some(user => user.email === email && user.password === password)) {
+    const loginToApp = (userNameValue: string, password: string) => {
+        if (TEST_USERS.some(user => user.username === userNameValue && user.password === password)) {
+            setUserName(userNameValue)
             setIsLoggedIn(true);
+            console.log(isLoggedIn)
         }
     }
 
@@ -44,7 +46,7 @@ export const LoginProvider = ({children}: Props) => {
     }
 
     return <LoginContext.Provider
-        value={{user, isLoggedIn, loginToApp, logoutFromApp}}>{children}</LoginContext.Provider>
+        value={{userName, isLoggedIn, loginToApp, logoutFromApp}}>{children}</LoginContext.Provider>
 }
 
 export const useLogin = () => {

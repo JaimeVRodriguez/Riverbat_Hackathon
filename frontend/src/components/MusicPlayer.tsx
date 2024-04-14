@@ -23,8 +23,6 @@ const MusicPlayer: React.FC = () => {
     const [albumArt, setAlbumArt] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    //const {isLoggedIn} = useLogin();
-
     useEffect(() => {
         getMusicByDecade(selectedDecade).then(
             (tracks: TrackObject[]) => {

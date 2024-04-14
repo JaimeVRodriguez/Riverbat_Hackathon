@@ -1,4 +1,4 @@
-import {Box, Button, Card, TextField} from "@mui/material";
+import {Box, Button, Card, TextField, Typography} from "@mui/material";
 import React, {useState} from "react";
 import {useLogin} from "../contexts/LoginContext.tsx";
 import {useNavigate} from "react-router-dom";
@@ -6,11 +6,11 @@ import {useNavigate} from "react-router-dom";
 type ButtonColor = "secondary" | "error" | "primary" | "info" | "success" | "warning" | "inherit";
 
 
-export const LoginForm = () => {
+export const LoginComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitButtonColor, setSubmitButtonColor] = useState<ButtonColor>('secondary');
-
+    const [isEmailOrPasswordError, setIsEmailOrPasswordError] = useState(false);
     const navigate = useNavigate();
     const {loginToApp} = useLogin();
 
@@ -25,11 +25,13 @@ export const LoginForm = () => {
 
     const handleLoginClick = () => {
         if (email.length > 0 && password.length > 0) {
+            setIsEmailOrPasswordError(false);
             setSubmitButtonColor('secondary');
             loginToApp(email, password);
             navigate('/');
         } else {
             setSubmitButtonColor('error');
+            setIsEmailOrPasswordError(true);
         }
     }
 
@@ -44,19 +46,23 @@ export const LoginForm = () => {
         }}>
             <Box sx={{marginBottom: '0.75em'}}>
                 <TextField
-                    label="email"
+                    error={isEmailOrPasswordError}
+                    label={isEmailOrPasswordError ? '' : 'email'}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleEmailChange(event)}
                 >
                 </TextField>
             </Box>
             <Box>
                 <TextField
+                    error={isEmailOrPasswordError}
                     sx={{marginBottom: '0.75em'}}
-                    label='password'
+                    label={isEmailOrPasswordError ? '' : 'password'}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => handlePasswordChange(event)}
-
+                    type='password'
                 />
             </Box>
+            {isEmailOrPasswordError &&
+                <Typography sx={{marginBottom: '0.75em', color:'darkred'}}>Incorrect email or password</Typography>}
             <Box>
                 <Button variant='contained' color={submitButtonColor} onClick={handleLoginClick}>Login</Button>
             </Box>

@@ -1,12 +1,15 @@
 import {Button, Stack} from "@mui/material";
-import React from "react";
+import React, {useState} from "react";
 import {
+    Favorite,
+    FavoriteBorder,
     PauseRounded,
     PlayArrowRounded,
     SkipNextRounded,
     SkipPreviousRounded
 } from "@mui/icons-material";
 import {styleColors} from "../globals/colors.ts";
+import {useLogin} from "../contexts/LoginContext.tsx";
 
 
 type MusicPlayerControlProps = {
@@ -18,6 +21,10 @@ type MusicPlayerControlProps = {
 }
 
 const MusicPlayerControl: React.FC<MusicPlayerControlProps> = (props: MusicPlayerControlProps) => {
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    const {isLoggedIn} = useLogin();
+
 
     function handlePlayClick() {
         props.onPlayClick();
@@ -36,13 +43,17 @@ const MusicPlayerControl: React.FC<MusicPlayerControlProps> = (props: MusicPlaye
         props.onPreviousClick();
     }
 
+    function handleFavoriteClick() {
+        setIsFavorite(!isFavorite);
+    }
+
     return <>
-        <Stack direction="row" justifyContent="center" >
+        <Stack direction="row" justifyContent="center">
             <Button onClick={handlePreviousClick}><SkipPreviousRounded sx={{
                 color: styleColors.accent100,
                 fontSize: 120,
             }}/></Button>
-            {!props.isPlaying && <Button onClick={handlePlayClick} ><PlayArrowRounded sx={{
+            {!props.isPlaying && <Button onClick={handlePlayClick}><PlayArrowRounded sx={{
                 color: styleColors.accent100,
                 fontSize: 120,
             }}/></Button>}
@@ -54,6 +65,14 @@ const MusicPlayerControl: React.FC<MusicPlayerControlProps> = (props: MusicPlaye
                 color: styleColors.accent100,
                 fontSize: 120,
             }}/></Button>
+            {isLoggedIn && <Button onClick={handleFavoriteClick}>{!isFavorite ? <FavoriteBorder sx={{
+                color: styleColors.accent100,
+                fontSize: 120,
+            }}/> : <Favorite sx={{
+                color: styleColors.accent100,
+                fontSize: 120,
+            }}/>}
+            </Button>}
         </Stack>
     </>
 }
