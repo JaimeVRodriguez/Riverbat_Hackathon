@@ -26,6 +26,7 @@ dependencies {
     testImplementation("org.projectlombok:lombok:1.18.28")
     annotationProcessor("org.projectlombok:lombok:1.18.28")
     implementation 'org.hibernate:hibernate-validator:8.0.1.Final'
+    implementation 'org.jsoup:jsoup:1.17.2'
 }
 
 tasks.register('installFrontend', Exec) {
