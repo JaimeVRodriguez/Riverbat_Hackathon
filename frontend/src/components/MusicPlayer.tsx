@@ -3,9 +3,10 @@ import {Box, Container, Typography, Card} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
 import OptionSelectionBar from "./OptionSelectionBar.tsx";
 
-import {TrackObject, getMusicByDecade, getTrackByName, getAlbumArt} from '../util/lastFM'
 import backTrack from '../assets/backtrack.jpg'
 import {styleColors} from "../globals/colors.ts";
+import {getAlbumArt, getMusicByDecade, getTrackByName} from "../util/Client.ts";
+import {TrackObject} from "../util/type/TrackObjectType.ts";
 
 const DECADE_SELECTIONS = [
     '70s',
@@ -30,7 +31,6 @@ const MusicPlayer: React.FC = () => {
                         let art = data.track.album.image[3]['#text'];
                         console.log(art.length)
                         if(!art.length ) {
-                            console.log('afldkj')
                             setAlbumArt(backTrack)
                         } else {
                             setAlbumArt(art)

@@ -1,9 +1,6 @@
 package com.swf.hackathon;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.tomcat.util.json.JSONParser;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,19 +19,11 @@ public class MusicController {
         String completeJSON;
         JSONParser parser;
         List<String> completeList;
-        switch (decade) {
-            case "70s":
-                tag = "70s";
-                break;
-            case "80s":
-                tag = "80s";
-                break;
-            case "90s":
-                tag = "90s";
-                break;
-            default:
-                tag = "70s"; // Default to 70s if invalid decade provided
-        }
+        tag = switch (decade) {
+            case "80s" -> "80s";
+            case "90s" -> "90s";
+            default -> "70s";
+        };
         RestTemplate testTemplate = new RestTemplate();
         String url = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=" + tag +
                 "&api_key=" + apiKey + "&format=json&limit=10";
@@ -46,7 +35,6 @@ public class MusicController {
     @CrossOrigin
     @GetMapping("/track/{url}")
     public String getTrackByName(@PathVariable String url) {
-        System.out.println(url);
         byte[] actualURL = Base64.getDecoder().decode(url);
         String stringURL = new String(actualURL);
         RestTemplate restTemplate = new RestTemplate();
@@ -58,7 +46,6 @@ public class MusicController {
     public String getAlbumArt(@PathVariable String mbid) {
        String res = "";
         try {
-            System.out.println(mbid);
             String url = "http://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=" + apiKey +
                     "&mbid=" + mbid + "&format=json";
             RestTemplate restTemplate = new RestTemplate();
