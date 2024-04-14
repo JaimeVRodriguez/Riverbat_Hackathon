@@ -80,7 +80,8 @@ public class TrackService {
                         track.get("name").asText(),
                         track.get("mbid").asText(),
                         track.get("artist").get("name").asText(),
-                        track.get("url").asText()
+                        track.get("url").asText(),
+                        decade
                 );
                 this.populateTrackYoutubeFromURL(newTrack);
                 this.populateAlbumArtForTrack(newTrack);

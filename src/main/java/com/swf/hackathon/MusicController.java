@@ -31,22 +31,8 @@ public class MusicController {
 
     @CrossOrigin
     @GetMapping("/{decade}")
-    public String getMusicByDecade(@PathVariable String decade) {
-        String tag;
-        String completeJSON;
-        JSONParser parser;
-        List<String> completeList;
-        tag = switch (decade) {
-            case "80s" -> "80s";
-            case "90s" -> "90s";
-            default -> "70s";
-        };
-        RestTemplate testTemplate = new RestTemplate();
-        String url = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=" + tag + "&api_key=" + lastFmApiKey + "&format=json&limit=10";
-        RestTemplate restTemplate = new RestTemplate();
-        completeJSON = restTemplate.getForObject(url, String.class);
-
-        return completeJSON;
+    public List<Track> getMusicByDecade(@PathVariable String decade) {
+        return trackService.getTracksByDecade(decade);
     }
 
     @CrossOrigin

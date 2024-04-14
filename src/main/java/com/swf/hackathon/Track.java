@@ -1,9 +1,6 @@
 package com.swf.hackathon;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +9,7 @@ import java.util.List;
 public class Track {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String artist;
@@ -27,7 +24,8 @@ public class Track {
     }
 
     private String url;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
     private List<TrackDecade> decade;
 
     public List<TrackDecade> getDecade() {
@@ -46,16 +44,14 @@ public class Track {
         this.decade.remove(decade);
     }
 
-    public Track(String name, String mbid, String artist, String url) {
-        this.name=name;
-        this.artist=artist;
-        this.url=url;
-        this.mbid=mbid;
+    public Track(String name, String mbid, String artist, String url, String decade) {
+        this(name, mbid, url, "", artist, "", "", decade);
     }
 
-    public Track( String name,String mbid, String url, String imagePath,String artist, String youTubeID, String lyrics, String decade) {
+    public Track(String name, String mbid, String url, String imagePath, String artist, String youTubeID, String lyrics, String decade) {
         this.name = name;
         this.artist = artist;
+        this.url = url;
         this.imagePath = imagePath;
         this.youTubeID = youTubeID;
         this.mbid = mbid;
