@@ -78,9 +78,9 @@ function Gemini({song}: GeminiProps) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        {!loading && <p className="text-align-left">{apiData}</p>}
-                        {loading && <p>Gemini Pro AI is getting your lyrics...</p>}
+                    <Typography id="modal-modal-description" sx={{ mt: 2, color:'white' }}>
+                        {!loading && `${apiData}`}
+                        {loading && "Gemini Pro AI is getting your lyrics..."}
                     </Typography>
                 </Box>
             </Modal>

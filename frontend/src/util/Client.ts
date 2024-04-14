@@ -18,7 +18,7 @@ export const getTrackByName = async (track: TrackObject) => {
 export const getMusicByDecade = async (selectedDecade: string) => {
     try {
         const response = await axios.get(`http://localhost:8080/music/${selectedDecade}`);
-        return response.data.tracks.track;
+        return response.data;
     } catch (error) {
         console.error('Error fetching music data:', error);
     }
