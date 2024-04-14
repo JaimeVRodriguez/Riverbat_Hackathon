@@ -13,7 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/music")
 public class MusicController {
-    private final  String apiKey="9beb98cd8c38d5bd1eae3ae43bda26a8";
+    private final String apiKey = "9beb98cd8c38d5bd1eae3ae43bda26a8";
+
     @CrossOrigin
     @GetMapping("/{decade}")
     public String getMusicByDecade(@PathVariable String decade) {
@@ -35,9 +36,10 @@ public class MusicController {
                 tag = "70s"; // Default to 70s if invalid decade provided
         }
         RestTemplate testTemplate = new RestTemplate();
-        String url = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=" + tag + "&api_key=" + apiKey + "&format=json&limit=10";
+        String url = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=" + tag +
+                "&api_key=" + apiKey + "&format=json&limit=10";
         RestTemplate restTemplate = new RestTemplate();
-        completeJSON=restTemplate.getForObject(url, String.class);
+        completeJSON = restTemplate.getForObject(url, String.class);
         return completeJSON;
     }
 
@@ -45,9 +47,19 @@ public class MusicController {
     @GetMapping("/track/{url}")
     public String getTrackByName(@PathVariable String url) {
         System.out.println(url);
-        byte[] actualURL=Base64.getDecoder().decode(url);
-        String stringURL=new String(actualURL);
+        byte[] actualURL = Base64.getDecoder().decode(url);
+        String stringURL = new String(actualURL);
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(stringURL, String.class);
+    }
+
+    @CrossOrigin
+    @GetMapping("/track/album/{mbid}")
+    public String getAlbumArt(@PathVariable String mbid) {
+        System.out.println(mbid);
+        String url = "http://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=" + apiKey +
+                "&mbid=" + mbid + "&format=json";
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(url, String.class);
     }
 }

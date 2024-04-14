@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Box, Container, Typography} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
 import OptionSelectionBar from "./OptionSelectionBar.tsx";
-import {TrackObject, fetchTrackListForDecade, fetchYoutubeURL} from '../util/lastFM'
+import {TrackObject, getMusicByDecade, getTrackByName, getAlbumArt} from '../util/lastFM'
 
 const DECADE_SELECTIONS = [
     '70s',
@@ -16,16 +16,24 @@ const MusicPlayer: React.FC = () => {
         const [currentTrack, setCurrentTrack] = useState(0);
         const [currentYoutubeURL, setCurrentYoutubeURL] = useState('https://www.youtube.com/embed/EoVQ_TQFJy0');
         const [isPlaying, setIsPlaying] = useState(false);
-        useEffect(() => {
-            fetchTrackListForDecade(selectedDecade).then(
+        const [albumArt, setAlbumArt] = useState('')
+
+    useEffect(() => {
+            getMusicByDecade(selectedDecade).then(
                 (tracks: TrackObject[]) => {
                     setTracks(tracks);
-                });
-        }, [selectedDecade, setTracks]);
+                    const art = getAlbumArt(tracks[currentTrack].mbid)
+                    art.then(data => {
+                        setAlbumArt(data.track.album.image[3]['#text'])
+                    })
+                }
+            );
+
+        }, [selectedDecade, setTracks, currentTrack]);
 
         useEffect(() => {
             if (tracks.length > 0) {
-                fetchYoutubeURL(tracks[currentTrack]).then((youtubeLink: string) => {
+                getTrackByName(tracks[currentTrack]).then((youtubeLink: string) => {
                         setCurrentYoutubeURL(youtubeLink);
                     }
                 )
@@ -67,7 +75,7 @@ const MusicPlayer: React.FC = () => {
                          width: 350,
                      }}
                      alt="Template image"
-                     src={tracks[currentTrack] && tracks[currentTrack].image[2]["#text"]}/>
+                     src={albumArt}/>
                 {tracks.length > 0 &&
                     <Box><Typography variant={"h3"}>{tracks[currentTrack].name}</Typography>
                         <Typography
