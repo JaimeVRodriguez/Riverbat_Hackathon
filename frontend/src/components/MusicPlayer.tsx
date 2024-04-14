@@ -151,7 +151,7 @@ const MusicPlayer: React.FC = () => {
                                       allow="autoplay; encrypted-media"
                                       allowFullScreen></iframe>}
             </div>
-            {tracks.length > 0 && <Gemini song={tracks[currentTrack].name} artist={tracks[currentTrack].artist.name}/>}
+            {tracks.length > 0 && <Gemini song={tracks[currentTrack].name}/>}
         </Card>
 
             </>

@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {GoogleGenerativeAI} from "@google/generative-ai";
-import {Box, Button, Chip, Modal, Typography} from "@mui/material";
+import {Box, Button, Modal, Typography} from "@mui/material";
 import {styleColors} from "../globals/colors.ts";
 
 interface GeminiProps {
@@ -21,10 +21,13 @@ const style = {
     overflow: 'scroll'
 };
 function Gemini({song}: GeminiProps) {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [apiData, setApiData] = useState('');
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+
+    }
     const handleClose = () => setOpen(false);
 
     const genAI = new GoogleGenerativeAI(
@@ -42,7 +45,6 @@ function Gemini({song}: GeminiProps) {
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         setLoading(true);
-        // console.log(name, gender, age , country, hobbies);
         fetchData();
     };
     return (
@@ -51,17 +53,18 @@ function Gemini({song}: GeminiProps) {
                 <form onSubmit={handleSubmit}>
                     <div className="row d-flex align-items-end">
                         <div className="col-lg-2">
-                            <Chip
-                                label={'Get Lyrics'}
+                            <Button
                                 sx={{
                                     fontSize: 'x-large',
                                     fontFamily: 'Roboto Mono',
                                     backgroundColor:styleColors.accent200,
                                     marginX:'2em',
-                                    padding:'1em',
-                                }}
+                                    padding:'10px',
+                                    color: styleColors.primary500,
+                                    borderRadius: '20px'
+                                }} type={'submit'}
                                 onClick={handleOpen} className="btn btn-primary mt-3 col-lg-12"
-                            />
+                            >Get Lyrics</Button>
                         </div>
 
                     </div>
