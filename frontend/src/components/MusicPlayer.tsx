@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Box, Container, Typography, Card} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
 import OptionSelectionBar from "./OptionSelectionBar.tsx";
-import {TrackObject, fetchTrackListForDecade, fetchYoutubeURL} from '../util/lastFM'
-import {styleColors} from "../globals/colors.ts";
+
+import {TrackObject, getMusicByDecade, getTrackByName, getAlbumArt} from '../util/lastFM'
+import backTrack from '../assets/backtrack.jpg'
 
 const DECADE_SELECTIONS = [
     '70s',
@@ -17,17 +18,33 @@ const MusicPlayer: React.FC = () => {
         const [currentTrack, setCurrentTrack] = useState(0);
         const [currentYoutubeURL, setCurrentYoutubeURL] = useState('https://www.youtube.com/embed/EoVQ_TQFJy0');
         const [isPlaying, setIsPlaying] = useState(false);
+        const [albumArt, setAlbumArt] = useState('')
+
         useEffect(() => {
-            fetchTrackListForDecade(selectedDecade).then(
+            getMusicByDecade(selectedDecade).then(
                 (tracks: TrackObject[]) => {
                     setTracks(tracks);
-                });
-            console.log(tracks);
-        }, [selectedDecade, setTracks]);
+                    const getArt = getAlbumArt(tracks[currentTrack].mbid)
+                    getArt.then(data => {
+                        let art = data.track.album.image[3]['#text'];
+                        console.log(art.length)
+                        if(!art.length ) {
+                            console.log('afldkj')
+                            setAlbumArt(backTrack)
+                        } else {
+                            setAlbumArt(art)
+                        }
+                    }).catch(() => {
+                        setAlbumArt(backTrack)
+                    })
+                }
+            );
+
+        }, [selectedDecade, setTracks, currentTrack]);
 
         useEffect(() => {
             if (tracks.length > 0) {
-                fetchYoutubeURL(tracks[currentTrack]).then((youtubeLink: string) => {
+                getTrackByName(tracks[currentTrack]).then((youtubeLink: string) => {
                         setCurrentYoutubeURL(youtubeLink);
                     }
                 )

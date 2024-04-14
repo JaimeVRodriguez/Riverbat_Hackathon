@@ -28,7 +28,7 @@ export type TrackObject =
         youtube: string;
     }
 
-export const fetchYoutubeURL = async (track: TrackObject) => {
+export const getTrackByName = async (track: TrackObject) => {
     const youtubeRegex = new RegExp("data-youtube-url=(.+)", "g");
     let res = '';
     try {
@@ -43,7 +43,8 @@ export const fetchYoutubeURL = async (track: TrackObject) => {
     }
     return res;
 };
-export const fetchTrackListForDecade = async (selectedDecade: string) => {
+
+export const getMusicByDecade = async (selectedDecade: string) => {
     try {
         const response = await axios.get(`http://localhost:8080/music/${selectedDecade}`);
         return response.data.tracks.track;
@@ -51,5 +52,14 @@ export const fetchTrackListForDecade = async (selectedDecade: string) => {
         console.error('Error fetching music data:', error);
     }
 };
+
+export const getAlbumArt = async (mdid: string) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/music/track/album/${mdid}`);
+        return response.data
+    } catch (error) {
+        console.error('Error fetching music data:', error);
+    }
+}
 
 
