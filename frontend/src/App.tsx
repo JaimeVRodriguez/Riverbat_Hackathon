@@ -7,6 +7,21 @@ import {LoginForm} from "./components/LoginForm.tsx";
 import {AppBarComponent} from "./components/AppBarComponent.tsx";
 import {LoginProvider} from "./contexts/LoginContext.tsx";
 
+import ChatBot from 'react-simple-chatbot';
+
+const steps = [
+    {
+        id: '0',
+        message: 'Welcome to react chatbot!',
+        trigger: '1',
+    },
+    {
+        id: '1',
+        message: 'Bye!',
+        end: true,
+    },
+];
+
 function App() {
 
     return (
@@ -23,6 +38,7 @@ function App() {
                             flexDirection: 'column',
                             alignItems: 'center'
                         }}>
+                            <ChatBot steps={steps} />
                             <AppBarComponent/>
                             <Box>
                                 <Stack>
