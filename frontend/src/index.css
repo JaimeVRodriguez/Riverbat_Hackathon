@@ -29,6 +29,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--dark);
 }
 
 h1 {
@@ -67,3 +68,36 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+
+
+:root {
+  --dark: #1E90FF;
+  --primary: #B3005E;
+  --primary-light: #FFD700;
+  --light: #FFFF00;
+}
+
+#sunset {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, rgba(34,40,49,0.3) 0%, rgba(34,40,49,0.8) 40%, rgba(179, 0, 94, 0.9) 55%,  rgba(100, 0, 100, 0.8) 70%, rgba(34,40,49,0) 100%);
+}
+
+#sun {
+  position: absolute;
+  top: 10%;
+  left: 0.6%;
+  width: 100%;
+  height: 50%;
+  background:  radial-gradient(circle, rgba(255,95,158,.8) 0%, rgba(255,95,158,.8) 20%, rgba(255,95,158,0) 22%, rgba(252,70,107,0) 100%);
+}
+
+#canvas {
+  position: relative;
+}
+

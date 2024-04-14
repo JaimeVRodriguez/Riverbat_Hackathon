@@ -14,7 +14,12 @@
     </style>
 </head>
 <body>
-<div id="root" style="height: 100vh; width: 100vw"></div>
+<div id="sun"></div>
+<div id="sunset"></div>
+<canvas id="canvas"></canvas>
+<div id="root" style="height: 100vh; z-index: 30; position: absolute; width: 100vw">
+</div>
 <script type="module" src="/src/main.tsx"></script>
+<script src="/src/util/horizon.js"></script>
 </body>
 </html>

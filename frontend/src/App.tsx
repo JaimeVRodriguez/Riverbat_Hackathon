@@ -20,11 +20,10 @@ function App() {
                 marginBottom: "2em",
                 justifyContent: 'center',
             }}>
-                <Box
-                    sx={{}}
-                >
+                <Box>
                     <Typography sx={{fontFamily: 'Syncopate', color: styleColors.accent200}}
                                 variant={'h2'}>BackTrack</Typography>
+
                 </Box>
             </AppBar>
             <Box>
