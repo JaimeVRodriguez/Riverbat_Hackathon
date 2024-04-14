@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Container, Typography} from "@mui/material";
+import {Box, Container, Typography, Card} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
 import OptionSelectionBar from "./OptionSelectionBar.tsx";
 import {TrackObject, fetchTrackListForDecade, fetchYoutubeURL} from '../util/lastFM'
+import {styleColors} from "../globals/colors.ts";
 
 const DECADE_SELECTIONS = [
     '70s',
@@ -21,6 +22,7 @@ const MusicPlayer: React.FC = () => {
                 (tracks: TrackObject[]) => {
                     setTracks(tracks);
                 });
+            console.log(tracks);
         }, [selectedDecade, setTracks]);
 
         useEffect(() => {
@@ -33,6 +35,7 @@ const MusicPlayer: React.FC = () => {
         }, [currentTrack, isPlaying]);
 
         const togglePlaying = () => {
+            console.log(tracks);
             setIsPlaying(!isPlaying);
         };
 
@@ -59,31 +62,61 @@ const MusicPlayer: React.FC = () => {
         }
 
         return (
-            <Container>
-                <OptionSelectionBar handleOnClick={handleClickDecade} options={DECADE_SELECTIONS}/>
-                <Box component="img"
-                     sx={{
-                         height: 233,
-                         width: 350,
-                     }}
-                     alt="Template image"
-                     src={tracks[currentTrack] && tracks[currentTrack].image[2]["#text"]}/>
-                {tracks.length > 0 &&
-                    <Box><Typography variant={"h3"}>{tracks[currentTrack].name}</Typography>
-                        <Typography
-                            variant={"h4"}>{tracks[currentTrack].artist.name}</Typography></Box>
-                }
-                <MusicPlayerControl onPlayClick={handlePlayTrack}
-                                    isPlaying={isPlaying}
-                                    onPauseClick={handlePlayTrack}
-                                    onNextClick={handleNextTrack}
-                                    onPreviousClick={handlePreviousTrack}/>
-                <div className="video-frame">
-                    {isPlaying && <iframe id="audioPlayer" width="560" height="315"
-                                          src={currentYoutubeURL}
-                                          frameBorder="0" allow="autoplay; encrypted-media"
-                                          allowFullScreen></iframe>}
-                </div>
+            <Container sx={{
+                height: '100%',
+            }}>
+                <Card sx={{
+                    width: "100%",
+                    height: "60%",
+                    padding: '2em',
+                    backgroundColor: "rgba(133,48,227,0.6)",
+                    backgroundImage: "linear-gradient(90deg, rgba(133,48,227,0.6059756666338411) 48%, rgba(30,144,255,0.6099532576702556) 99%)",
+                    // backgroundColor: styleColors.primary300,
+                }}>
+                    <Box
+                        sx={{
+                            justifyContent: '',
+                            borderRadius: '20px',
+                            backgroundColor: styleColors.primary500+'50',
+                            paddingY: "1em",
+                        }}>
+                        <OptionSelectionBar
+                            handleOnClick={handleClickDecade}
+                            options={DECADE_SELECTIONS}/>
+                    </Box>
+                    <Box component="img"
+                         sx={{
+                             marginY: "1em",
+                             height: 233,
+                             width: 350,
+                         }}
+                         alt="Template image"
+                         src={tracks[currentTrack] && tracks[currentTrack].image[2]["#text"]}/>
+                    {tracks.length > 0 &&
+                        <Box
+                            sx={{
+                                backgroundColor: styleColors.primary400+"55",
+                                padding: '1em',
+                                color: 'white',
+                                borderRadius: '1em',
+                            }}
+                        ><
+                            Typography variant={"h3"}>{tracks[currentTrack].name}</Typography>
+                            <Typography
+                                variant={"h4"}>{tracks[currentTrack].artist.name}</Typography></Box>
+                    }
+                    <MusicPlayerControl onPlayClick={handlePlayTrack}
+                                        isPlaying={isPlaying}
+                                        onPauseClick={handlePlayTrack}
+                                        onNextClick={handleNextTrack}
+                                        onPreviousClick={handlePreviousTrack}/>
+                    <div className="video-frame">
+                        {isPlaying && <iframe id="audioPlayer" width="560" height="315"
+                                              src={currentYoutubeURL}
+                                              frameBorder="0" allow="autoplay; encrypted-media"
+                                              allowFullScreen></iframe>}
+                    </div>
+                </Card>
             </Container>
         );
     }
