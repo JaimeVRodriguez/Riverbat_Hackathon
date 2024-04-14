@@ -137,7 +137,7 @@ const MusicPlayer: React.FC = () => {
                                variant={"h3"}>{tracks[currentTrack].name}</Typography>
                     <Typography fontFamily={'Arsenal'}
 
-                                variant={"h4"}>{tracks[currentTrack].artist.name}</Typography>
+                                variant={"h4"}>{tracks[currentTrack].artist}</Typography>
                 </Box>
             }
             <MusicPlayerControl onPlayClick={handlePlayTrack}
