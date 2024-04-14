@@ -1,9 +1,8 @@
-import {ArtistObject} from "./ArtistObjectType.ts";
 import {ImageObject} from "./ImageObjectType.ts";
 
 export type TrackObject =
     {
-        artist: ArtistObject;
+        artist: string;
         duration: string;
         image: ImageObject[];
         mbid: string;
