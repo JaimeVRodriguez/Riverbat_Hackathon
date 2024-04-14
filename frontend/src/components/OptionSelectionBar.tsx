@@ -1,4 +1,5 @@
 import {Chip, Stack} from "@mui/material";
+import {styleColors} from "../globals/colors.ts";
 
 type OptionSelectionBarProps = {
     options: string[];
@@ -8,10 +9,17 @@ type OptionSelectionBarProps = {
 const OptionSelectionBar = (props: OptionSelectionBarProps) => {
 
     return <>
-        <Stack direction="row" justifyContent="center">
+        <Stack direction="row" sx={{
+        }} justifyContent="center">
             {
-                props.options.map((option,index) => {
-                    return <Chip label={option} key={index} color={'warning'} onClick={props.handleOnClick.bind(this, option)}/>
+                props.options.map((option, index) => {
+                    return <Chip label={option} key={index}
+                                 sx={{
+                                     backgroundColor:styleColors.alt100,
+                                     marginX:'3em',
+                                     paddingX:'1em',
+                                 }}
+                                 onClick={props.handleOnClick.bind(this, option)}/>
                 })
             }
         </Stack>

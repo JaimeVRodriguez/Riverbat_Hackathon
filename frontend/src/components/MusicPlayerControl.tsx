@@ -1,6 +1,7 @@
 import {Button, Stack} from "@mui/material";
 import React from "react";
 import {Pause, PlayArrow, SkipNextRounded, SkipPreviousRounded} from "@mui/icons-material";
+import {styleColors} from "../globals/colors.ts";
 
 
 type MusicPlayerControlProps = {
@@ -31,11 +32,23 @@ const MusicPlayerControl: React.FC<MusicPlayerControlProps> = (props: MusicPlaye
     }
 
     return <>
-        <Stack direction="row" justifyContent="center">
-            <Button onClick={handlePreviousClick}><SkipPreviousRounded/></Button>
-            {!props.isPlaying && <Button onClick={handlePlayClick}><PlayArrow/></Button>}
-            {props.isPlaying && <Button onClick={handlePauseClick}><Pause/></Button>}
-            <Button onClick={handleNextClick}><SkipNextRounded/></Button>
+        <Stack direction="row" justifyContent="center" >
+            <Button onClick={handlePreviousClick}><SkipPreviousRounded sx={{
+                color: styleColors.accent100,
+                fontSize: 120,
+            }}/></Button>
+            {!props.isPlaying && <Button onClick={handlePlayClick} ><PlayArrow sx={{
+                color: styleColors.accent100,
+                fontSize: 120,
+            }}/></Button>}
+            {props.isPlaying && <Button onClick={handlePauseClick}><Pause sx={{
+                color: styleColors.accent100,
+                fontSize: 120,
+            }}/></Button>}
+            <Button onClick={handleNextClick}><SkipNextRounded sx={{
+                color: styleColors.accent100,
+                fontSize: 120,
+            }}/></Button>
         </Stack>
     </>
 }

@@ -1,0 +1,15 @@
+export const styleColors= {
+    pink100:'#ff4df0',
+    primary100:'#D8B4E2',
+    primary200:'#9d4dff',
+    primary300: '#8A2BE2',
+    primary400:'#230C33',
+    primary500: '#28112B',
+    accent100:'#FFFF00',
+    accent200:'#FFD700',
+    blue100:'#70ffdf',
+    blue200:'#00CED1',
+    blue300:'#1E90FF',
+    alt100:'#E94F37',
+    alt200:'#FF4500',
+}
