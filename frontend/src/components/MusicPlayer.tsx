@@ -97,7 +97,7 @@ const MusicPlayer: React.FC = () => {
                             paddingY: "1em",
                         }}>
                         <OptionSelectionBar
-                            handleOnClick={handleClickDecade}
+                            handleSelection={handleClickDecade}
                             options={DECADE_SELECTIONS}/>
                     </Box>
                     <Box height={275}>

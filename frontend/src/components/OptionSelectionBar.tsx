@@ -3,11 +3,13 @@ import {styleColors} from "../globals/colors.ts";
 
 type OptionSelectionBarProps = {
     options: string[];
-    handleOnClick: (option: string) => void;
+    handleSelection: (option: string) => void;
 }
 
 const OptionSelectionBar = (props: OptionSelectionBarProps) => {
-
+    const handleClickOption = (option: string) => {
+        props.handleSelection.bind(this, option);
+    }
     return <>
         <Stack direction="row" sx={{}} justifyContent="center">
             {
@@ -20,7 +22,7 @@ const OptionSelectionBar = (props: OptionSelectionBarProps) => {
                                      marginX:'2em',
                                      padding:'1em',
                                  }}
-                                 onClick={props.handleOnClick.bind(this, option)}/>
+                                 onClick={handleClickOption.bind(this, option)}/>
                 })
             }
         </Stack>
