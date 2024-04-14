@@ -32,12 +32,10 @@ const MusicPlayerControl: React.FC<MusicPlayerControlProps> = (props: MusicPlaye
 
     return <>
         <Stack direction="row" justifyContent="center">
-            <Button><SkipPreviousRounded onClick={handlePreviousClick}/></Button>
-            <Button>
-                {!props.isPlaying && <PlayArrow onClick={handlePlayClick}/>
-                }
-                {props.isPlaying && <Pause onClick={handlePauseClick}/>}</Button>
-            <Button><SkipNextRounded onClick={handleNextClick}/></Button>
+            <Button onClick={handlePreviousClick}><SkipPreviousRounded/></Button>
+            {!props.isPlaying && <Button onClick={handlePlayClick}><PlayArrow/></Button>}
+            {props.isPlaying && <Button onClick={handlePauseClick}><Pause/></Button>}
+            <Button onClick={handleNextClick}><SkipNextRounded/></Button>
         </Stack>
     </>
 }
