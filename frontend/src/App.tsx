@@ -1,38 +1,48 @@
+import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
+import {Box, Container, Stack} from "@mui/material";
 import './App.css'
-import {AppBar, Box, Stack, Typography} from "@mui/material";
 import MusicPlayer from "./components/MusicPlayer.tsx";
-import {styleColors} from "./globals/colors.ts";
+import {PageNotFound} from "./components/PageNotFound.tsx";
+import {LoginForm} from "./components/LoginForm.tsx";
+import {AppBarComponent} from "./components/AppBarComponent.tsx";
+import {LoginProvider} from "./contexts/LoginContext.tsx";
 
 function App() {
+
     return (
-        <Box sx={{
-            display: 'flex',
-            height: '100vh',
-            backgroundImage: 'url("synth.webp")',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            flexDirection: 'column',
-            alignItems: 'center'
-        }}>
-            <AppBar position="static" sx={{
-                backgroundColor: styleColors.primary500,
-                paddingY: "1em",
-                marginBottom: "2em",
-                justifyContent: 'center',
-            }}>
-                <Box>
-                    <Typography sx={{fontFamily: 'Syncopate', color: styleColors.accent200}}
-                                variant={'h2'}>BackTrack</Typography>
-
-                </Box>
-            </AppBar>
-            <Box>
-                <Stack>
-                    <MusicPlayer/>
-                </Stack>
-            </Box>
-
-        </Box>
+        <LoginProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/' element={
+                        <Box sx={{
+                            display: 'flex',
+                            height: '100vh',
+                            backgroundImage: 'url("synth.webp")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: 'cover',
+                            flexDirection: 'column',
+                            alignItems: 'center'
+                        }}>
+                            <AppBarComponent/>
+                            <Box>
+                                <Stack>
+                                    <Container sx={{
+                                        height: '100%',
+                                    }}>
+                                            <Outlet/>
+                                    </Container>
+                                </Stack>
+                            </Box>
+                        </Box>
+                    }>
+                        <Route index element={<MusicPlayer/>}/>
+                        <Route path='/music' element={<MusicPlayer/>}/>
+                        <Route path='/login' element={<LoginForm/>}/>
+                    </Route>
+                    <Route path='*' element={<PageNotFound/>}/>
+                </Routes>
+            </BrowserRouter>
+        </LoginProvider>
     )
 }
 
