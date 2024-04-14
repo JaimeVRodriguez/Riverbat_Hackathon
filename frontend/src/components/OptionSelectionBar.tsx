@@ -8,7 +8,7 @@ type OptionSelectionBarProps = {
 
 const OptionSelectionBar = (props: OptionSelectionBarProps) => {
     const handleClickOption = (option: string) => {
-        props.handleSelection.bind(this, option);
+        props.handleSelection(option);
     }
     return <>
         <Stack direction="row" sx={{}} justifyContent="center">
@@ -18,9 +18,9 @@ const OptionSelectionBar = (props: OptionSelectionBarProps) => {
                                  sx={{
                                      fontSize: 'x-large',
                                      fontFamily: 'Roboto Mono',
-                                     backgroundColor:styleColors.accent200,
-                                     marginX:'2em',
-                                     padding:'1em',
+                                     backgroundColor: styleColors.accent200,
+                                     marginX: '2em',
+                                     padding: '1em',
                                  }}
                                  onClick={handleClickOption.bind(this, option)}/>
                 })
