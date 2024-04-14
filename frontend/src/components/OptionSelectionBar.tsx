@@ -14,9 +14,11 @@ const OptionSelectionBar = (props: OptionSelectionBarProps) => {
                 props.options.map((option, index) => {
                     return <Chip label={option} key={index}
                                  sx={{
-                                     backgroundColor: styleColors.alt100,
-                                     marginX: '3em',
-                                     paddingX: '1em',
+                                     fontSize: 'x-large',
+                                     fontFamily: 'Roboto Mono',
+                                     backgroundColor:styleColors.accent200,
+                                     marginX:'2em',
+                                     padding:'1em',
                                  }}
                                  onClick={props.handleOnClick.bind(this, option)}/>
                 })

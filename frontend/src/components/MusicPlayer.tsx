@@ -55,6 +55,7 @@ const MusicPlayer: React.FC = () => {
         }, [currentTrack, isPlaying]);
 
         const togglePlaying = () => {
+            console.log(tracks);
             setIsPlaying(!isPlaying);
         };
 
@@ -85,7 +86,7 @@ const MusicPlayer: React.FC = () => {
                 height: '100%',
             }}>
                 <Card sx={{
-                    width: "100%",
+                    width: '50em',
                     height: "60%",
                     padding: '2em',
                     backgroundColor: "rgba(133,48,227,0.6)",
@@ -110,6 +111,10 @@ const MusicPlayer: React.FC = () => {
                                          marginY: "1em",
                                          height: 233,
                                          width: 350,
+                                         borderRadius:'1em',
+                                         borderColor: styleColors.alt100 + '40',
+                                         borderWidth: '5px',
+                                         borderStyle: 'solid',
                                      }}
                                      alt="Template image"
                                      src={albumArt}
@@ -124,11 +129,16 @@ const MusicPlayer: React.FC = () => {
                                 padding: '1em',
                                 color: 'white',
                                 borderRadius: '1em',
+                                marginBottom: '1em'
                             }}
                         ><
-                            Typography variant={"h3"}>{tracks[currentTrack].name}</Typography>
-                            <Typography
-                                variant={"h4"}>{tracks[currentTrack].artist.name}</Typography></Box>
+                            Typography fontFamily={'Arsenal'}
+                                       fontWeight={'bold'}
+                                       variant={"h3"}>{tracks[currentTrack].name}</Typography>
+                            <Typography fontFamily={'Arsenal'}
+
+                                        variant={"h4"}>{tracks[currentTrack].artist.name}</Typography>
+                        </Box>
                     }
                     <MusicPlayerControl onPlayClick={handlePlayTrack}
                                         isPlaying={isPlaying}
