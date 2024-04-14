@@ -122,7 +122,7 @@ const MusicPlayer: React.FC = () => {
                     </Fade>
                 }
             </Box>
-            {tracks.length > 0 &&
+            {tracks && tracks.length > 0 &&
                 <Box
                     sx={{
                         backgroundColor: styleColors.primary400 + "55",
