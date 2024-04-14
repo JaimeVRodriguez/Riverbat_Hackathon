@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Box, Button, Chip, Stack, Typography} from "@mui/material";
-import {PlayArrow, SkipNextRounded, SkipPreviousRounded} from "@mui/icons-material";
+import {Box, Chip, Stack, Typography} from "@mui/material";
+import MusicPlayerControl from "./MusicPlayerControl.tsx";
 
 type ArtistObject = {
     mbid: string;
@@ -24,6 +24,13 @@ type TrackObject = {
     };
     url: string;
 }
+
+const DECADE_SELECTIONS= [
+    '70s',
+    '80s',
+    '90s'
+]
+
 const MusicPlayer: React.FC = () => {
         const [tracks, setTracks] = useState<TrackObject[]>([]);
         const [selectedDecade, setSelectedDecade] = useState('70s');
@@ -43,11 +50,11 @@ const MusicPlayer: React.FC = () => {
             fetchMusicData();
         }, [selectedDecade]);
 
-    useEffect(() => {
-        if(tracks.length>0) {
-            playTrack(tracks[currentTrack])
-        }
-    }, [currentTrack]);
+        useEffect(() => {
+            if (tracks.length > 0) {
+                playTrack(tracks[currentTrack])
+            }
+        }, [currentTrack]);
 
         const fetchYoutubeURL = async (track: TrackObject) => {
             try {
@@ -63,7 +70,6 @@ const MusicPlayer: React.FC = () => {
         const playTrack = (track: TrackObject) => {
             fetchYoutubeURL(track).then(elmnt => {
                     setCurrentYoutubeURL('https://www.youtube.com/embed/' + elmnt + '?autoplay=1');
-                    // setCurrentTrack(track);
                 }
             )
         };
@@ -72,25 +78,22 @@ const MusicPlayer: React.FC = () => {
             setSelectedDecade(decade)
         }
 
-        function handlePlayClick() {
-            playTrack(tracks[currentTrack])
-        }
-
-        function handleNextClick() {
-            console.log(tracks[currentTrack].image[3]["#text"])
-            if(currentTrack + 1 === tracks.length) {
+        function handleNextTrack() {
+            if (currentTrack + 1 === tracks.length) {
                 return setCurrentTrack(0);
             }
             setCurrentTrack(currentTrack + 1);
         }
 
-
-        function handlePreviousClick() {
-            if(currentTrack - 1 < 0) {
+        function handlePreviousTrack() {
+            if (currentTrack - 1 < 0) {
                 return setCurrentTrack(tracks.length - 1);
             }
             setCurrentTrack(currentTrack - 1);
+        }
 
+        function handlePlayTrack() {
+            playTrack(tracks[currentTrack])
         }
 
         return (
@@ -111,16 +114,13 @@ const MusicPlayer: React.FC = () => {
                     <Box><Typography variant={"h3"}>{tracks[currentTrack].name}</Typography>
                         <Typography
                             variant={"h4"}>{tracks[currentTrack].artist.name}</Typography></Box>
-    }
-                <Stack direction="row" justifyContent="center">
-                    <Button><SkipPreviousRounded onClick={handlePreviousClick}/></Button>
-                    <Button><PlayArrow onClick={handlePlayClick}/></Button>
-                    <Button><SkipNextRounded onClick={handleNextClick}/></Button>
-                </Stack>
+                }
+                <MusicPlayerControl onPlayClick={handlePlayTrack} onNextClick={handleNextTrack}
+                                    onPreviousClick={handlePreviousTrack}/>
                 <div className="video-frame">
                     <iframe id="audioPlayer" width="560" height="315" src={currentYoutubeURL}
                             frameBorder="0" allow="autoplay; encrypted-media"
-                            allowFullScreen ></iframe>
+                            allowFullScreen></iframe>
                 </div>
             </div>
         );
