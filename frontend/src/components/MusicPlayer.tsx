@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Box, Card, Fade, Typography} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
 import OptionSelectionBar from "./OptionSelectionBar.tsx";
-
 import backTrackImg from '../assets/backtrack.jpg'
 import {styleColors} from "../globals/colors.ts";
 import {getAlbumArt, getMusicByDecade, getTrackByName} from "../util/Client.ts";
 import {TrackObject} from "../util/type/TrackObjectType.ts";
+import Gemini from "./Gemini.tsx";
 
 const DECADE_SELECTIONS = [
     '70s',
@@ -82,6 +82,8 @@ const MusicPlayer: React.FC = () => {
     }
 
     return (
+        <>
+
         <Card sx={{
             width: '50em',
             height: "60%",
@@ -89,6 +91,7 @@ const MusicPlayer: React.FC = () => {
             backgroundColor: "rgba(133,48,227,0.6)",
             backgroundImage: "linear-gradient(90deg, rgba(133,48,227,0.6059756666338411) 48%, rgba(30,144,255,0.6099532576702556) 99%)",
         }}>
+
             <Box
                 sx={{
                     justifyContent: '',
@@ -148,7 +151,10 @@ const MusicPlayer: React.FC = () => {
                                       allow="autoplay; encrypted-media"
                                       allowFullScreen></iframe>}
             </div>
+            {tracks.length > 0 && <Gemini song={tracks[currentTrack].name} artist={tracks[currentTrack].artist.name}/>}
         </Card>
+
+            </>
     );
 };
 export default MusicPlayer;
