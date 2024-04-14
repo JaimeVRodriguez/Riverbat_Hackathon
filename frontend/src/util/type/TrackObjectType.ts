@@ -5,6 +5,7 @@ export type TrackObject =
         artist: string;
         duration: string;
         image: ImageObject[];
+        imagePath: string;
         mbid: string;
         name: string;
         streamable: {
