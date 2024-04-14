@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Container, Typography, Card} from "@mui/material";
+import {Box, Container, Typography, Card, Fade} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
 import OptionSelectionBar from "./OptionSelectionBar.tsx";
 
-import backTrack from '../assets/backtrack.jpg'
+import backTrackImg from '../assets/backtrack.jpg'
 import {styleColors} from "../globals/colors.ts";
 import {getAlbumArt, getMusicByDecade, getTrackByName} from "../util/Client.ts";
 import {TrackObject} from "../util/type/TrackObjectType.ts";
@@ -16,28 +16,30 @@ const DECADE_SELECTIONS = [
 
 const MusicPlayer: React.FC = () => {
         const [tracks, setTracks] = useState<TrackObject[]>([]);
-        const [selectedDecade, setSelectedDecade] = useState(DECADE_SELECTIONS[0]);
-        const [currentTrack, setCurrentTrack] = useState(0);
-        const [currentYoutubeURL, setCurrentYoutubeURL] = useState('https://www.youtube.com/embed/EoVQ_TQFJy0');
-        const [isPlaying, setIsPlaying] = useState(false);
-        const [albumArt, setAlbumArt] = useState('')
+        const [selectedDecade, setSelectedDecade] = useState<string>(DECADE_SELECTIONS[0]);
+        const [currentTrack, setCurrentTrack] = useState<number>(0);
+        const [currentYoutubeURL, setCurrentYoutubeURL] = useState<string>('https://www.youtube.com/embed/EoVQ_TQFJy0');
+        const [isPlaying, setIsPlaying] = useState<boolean>(false);
+        const [albumArt, setAlbumArt] = useState<string>('')
+        const [isLoading, setIsLoading] = useState<boolean>(false)
 
         useEffect(() => {
             getMusicByDecade(selectedDecade).then(
                 (tracks: TrackObject[]) => {
+                    setIsLoading(true);
                     setTracks(tracks);
                     const getArt = getAlbumArt(tracks[currentTrack].mbid)
                     getArt.then(data => {
-                        let art = data.track.album.image[3]['#text'];
-                        console.log(art.length)
-                        if(!art.length ) {
-                            setAlbumArt(backTrack)
+                        const art = data.track.album.image[3]['#text'];
+                        if (!art.length) {
+                            setAlbumArt(backTrackImg)
                         } else {
                             setAlbumArt(art)
                         }
+                        setIsLoading(false)
                     }).catch(() => {
-                        setAlbumArt(backTrack)
-                    })
+                        setAlbumArt(backTrackImg)
+                    }).finally(() => setIsLoading(false))
                 }
             );
 
@@ -53,7 +55,6 @@ const MusicPlayer: React.FC = () => {
         }, [currentTrack, isPlaying]);
 
         const togglePlaying = () => {
-            console.log(tracks);
             setIsPlaying(!isPlaying);
         };
 
@@ -89,31 +90,37 @@ const MusicPlayer: React.FC = () => {
                     padding: '2em',
                     backgroundColor: "rgba(133,48,227,0.6)",
                     backgroundImage: "linear-gradient(90deg, rgba(133,48,227,0.6059756666338411) 48%, rgba(30,144,255,0.6099532576702556) 99%)",
-                    // backgroundColor: styleColors.primary300,
                 }}>
                     <Box
                         sx={{
                             justifyContent: '',
                             borderRadius: '20px',
-                            backgroundColor: styleColors.primary500+'50',
+                            backgroundColor: styleColors.primary500 + '50',
                             paddingY: "1em",
                         }}>
                         <OptionSelectionBar
                             handleOnClick={handleClickDecade}
                             options={DECADE_SELECTIONS}/>
                     </Box>
-                    <Box component="img"
-                         sx={{
-                             marginY: "1em",
-                             height: 233,
-                             width: 350,
-                         }}
-                         alt="Template image"
-                         src={albumArt}/>
+                    <Box height={275}>
+                        {!isLoading &&
+                            <Fade in={!isLoading} timeout={1500}>
+                                <Box component="img"
+                                     sx={{
+                                         marginY: "1em",
+                                         height: 233,
+                                         width: 350,
+                                     }}
+                                     alt="Template image"
+                                     src={albumArt}
+                                />
+                            </Fade>
+                        }
+                    </Box>
                     {tracks.length > 0 &&
                         <Box
                             sx={{
-                                backgroundColor: styleColors.primary400+"55",
+                                backgroundColor: styleColors.primary400 + "55",
                                 padding: '1em',
                                 color: 'white',
                                 borderRadius: '1em',
@@ -129,9 +136,9 @@ const MusicPlayer: React.FC = () => {
                                         onNextClick={handleNextTrack}
                                         onPreviousClick={handlePreviousTrack}/>
                     <div className="video-frame">
-                        {isPlaying && <iframe id="audioPlayer" width="560" height="315"
+                        {isPlaying && <iframe id="audioPlayer"
                                               src={currentYoutubeURL}
-                                              frameBorder="0" allow="autoplay; encrypted-media"
+                                              allow="autoplay; encrypted-media"
                                               allowFullScreen></iframe>}
                     </div>
                 </Card>
