@@ -5,6 +5,7 @@ import OptionSelectionBar from "./OptionSelectionBar.tsx";
 
 import {TrackObject, getMusicByDecade, getTrackByName, getAlbumArt} from '../util/lastFM'
 import backTrack from '../assets/backtrack.jpg'
+import {styleColors} from "../globals/colors.ts";
 
 const DECADE_SELECTIONS = [
     '70s',
@@ -108,7 +109,7 @@ const MusicPlayer: React.FC = () => {
                              width: 350,
                          }}
                          alt="Template image"
-                         src={tracks[currentTrack] && tracks[currentTrack].image[2]["#text"]}/>
+                         src={albumArt}/>
                     {tracks.length > 0 &&
                         <Box
                             sx={{
