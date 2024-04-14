@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Box, Chip, Stack, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
+import OptionSelectionBar from "./OptionSelectionBar.tsx";
 
 type ArtistObject = {
     mbid: string;
@@ -25,7 +26,7 @@ type TrackObject = {
     url: string;
 }
 
-const DECADE_SELECTIONS= [
+const DECADE_SELECTIONS = [
     '70s',
     '80s',
     '90s'
@@ -74,7 +75,7 @@ const MusicPlayer: React.FC = () => {
             )
         };
 
-        const handleOnClick = (decade: string) => {
+        const handleClickDecade = (decade: string) => {
             setSelectedDecade(decade)
         }
 
@@ -98,11 +99,7 @@ const MusicPlayer: React.FC = () => {
 
         return (
             <div>
-                <Stack direction="row" justifyContent="center">
-                    <Chip label={"70s"} color={'warning'} onClick={handleOnClick.bind(this, "70s")}/>
-                    <Chip label={"80s"} color={'warning'} onClick={handleOnClick.bind(this, "80s")}/>
-                    <Chip label={"90s"} color={'warning'} onClick={handleOnClick.bind(this, "90s")}/>
-                </Stack>
+                <OptionSelectionBar handleOnClick={handleClickDecade} options={DECADE_SELECTIONS}/>
                 <Box component="img"
                      sx={{
                          height: 233,
