@@ -11,8 +11,8 @@ const OptionSelectionBar = React.FC<OptionSelectionBarProps> = (props: OptionSel
     return <>
         <Stack direction="row" justifyContent="center">
             {
-                props.options.map(option => {
-                    return <Chip label={option} color={'warning'} onClick={props.handleOnClick.bind(this, option)}/>
+                props.options.map((option,index) => {
+                    return <Chip label={option} key={index} color={'warning'} onClick={props.handleOnClick.bind(this, option)}/>
                 })
             }
         </Stack>
