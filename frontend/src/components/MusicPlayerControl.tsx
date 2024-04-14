@@ -1,10 +1,12 @@
 import {Button, Stack} from "@mui/material";
 import React from "react";
-import {PlayArrow, SkipNextRounded, SkipPreviousRounded} from "@mui/icons-material";
+import {Pause, PlayArrow, SkipNextRounded, SkipPreviousRounded} from "@mui/icons-material";
 
 
 type MusicPlayerControlProps = {
+    isPlaying: boolean;
     onPlayClick: () => void;
+    onPauseClick: () => void;
     onNextClick: () => void;
     onPreviousClick: () => void;
 }
@@ -12,8 +14,11 @@ type MusicPlayerControlProps = {
 const MusicPlayerControl: React.FC<MusicPlayerControlProps> = (props: MusicPlayerControlProps) => {
 
     function handlePlayClick() {
-
         props.onPlayClick();
+    }
+
+    function handlePauseClick() {
+        props.onPauseClick();
     }
 
     function handleNextClick() {
@@ -28,7 +33,10 @@ const MusicPlayerControl: React.FC<MusicPlayerControlProps> = (props: MusicPlaye
     return <>
         <Stack direction="row" justifyContent="center">
             <Button><SkipPreviousRounded onClick={handlePreviousClick}/></Button>
-            <Button><PlayArrow onClick={handlePlayClick}/></Button>
+            <Button>
+                {!props.isPlaying && <PlayArrow onClick={handlePlayClick}/>
+                }
+                {props.isPlaying && <Pause onClick={handlePauseClick}/>}</Button>
             <Button><SkipNextRounded onClick={handleNextClick}/></Button>
         </Stack>
     </>

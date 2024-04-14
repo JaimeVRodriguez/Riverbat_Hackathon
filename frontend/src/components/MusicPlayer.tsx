@@ -1,30 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import {Box, Typography} from "@mui/material";
+import {Box, Container, Typography} from "@mui/material";
 import MusicPlayerControl from "./MusicPlayerControl.tsx";
 import OptionSelectionBar from "./OptionSelectionBar.tsx";
-
-type ArtistObject = {
-    mbid: string;
-    name: string;
-    url: string;
-};
-type ImageObject = {
-    '#text': string;
-    size: string;
-};
-type TrackObject = {
-    artist: ArtistObject;
-    duration: string;
-    image: ImageObject[];
-    mbid: string;
-    name: string;
-    streamable: {
-        '#text': string;
-        fullTrack: string;
-    };
-    url: string;
-}
+import {TrackObject, fetchTrackListForDecade, fetchYoutubeURL} from '../util/lastFM'
 
 const DECADE_SELECTIONS = [
     '70s',
@@ -34,45 +12,28 @@ const DECADE_SELECTIONS = [
 
 const MusicPlayer: React.FC = () => {
         const [tracks, setTracks] = useState<TrackObject[]>([]);
-        const [selectedDecade, setSelectedDecade] = useState('70s');
+        const [selectedDecade, setSelectedDecade] = useState(DECADE_SELECTIONS[0]);
         const [currentTrack, setCurrentTrack] = useState(0);
         const [currentYoutubeURL, setCurrentYoutubeURL] = useState('https://www.youtube.com/embed/EoVQ_TQFJy0');
-        const youtubeRegex = "data-youtube-url=(.+)";
-        const actualRegex = new RegExp(youtubeRegex, "g");
+        const [isPlaying, setIsPlaying] = useState(false);
         useEffect(() => {
-            const fetchMusicData = async () => {
-                try {
-                    const response = await axios.get(`http://localhost:8080/music/${selectedDecade}`);
-                    setTracks(response.data.tracks.track);
-                } catch (error) {
-                    console.error('Error fetching music data:', error);
-                }
-            };
-            fetchMusicData();
-        }, [selectedDecade]);
+            fetchTrackListForDecade(selectedDecade).then(
+                (tracks: TrackObject[]) => {
+                    setTracks(tracks);
+                });
+        }, [selectedDecade, setTracks]);
 
         useEffect(() => {
             if (tracks.length > 0) {
-                playTrack(tracks[currentTrack])
+                fetchYoutubeURL(tracks[currentTrack]).then((youtubeLink: string) => {
+                        setCurrentYoutubeURL(youtubeLink);
+                    }
+                )
             }
-        }, [currentTrack]);
+        }, [currentTrack, isPlaying]);
 
-        const fetchYoutubeURL = async (track: TrackObject) => {
-            try {
-                const response = await axios.get(`http://localhost:8080/music/track/${btoa(track.url)}`);
-                let regexMatch = response.data.match(actualRegex)[0];
-                regexMatch = regexMatch.slice(regexMatch.lastIndexOf('=') + 1, -1);
-                return regexMatch;
-            } catch (error) {
-                console.error('Error fetching music data:', error);
-            }
-        };
-
-        const playTrack = (track: TrackObject) => {
-            fetchYoutubeURL(track).then(elmnt => {
-                    setCurrentYoutubeURL('https://www.youtube.com/embed/' + elmnt + '?autoplay=1');
-                }
-            )
+        const togglePlaying = () => {
+            setIsPlaying(!isPlaying);
         };
 
         const handleClickDecade = (decade: string) => {
@@ -94,11 +55,11 @@ const MusicPlayer: React.FC = () => {
         }
 
         function handlePlayTrack() {
-            playTrack(tracks[currentTrack])
+            togglePlaying();
         }
 
         return (
-            <div>
+            <Container>
                 <OptionSelectionBar handleOnClick={handleClickDecade} options={DECADE_SELECTIONS}/>
                 <Box component="img"
                      sx={{
@@ -112,14 +73,18 @@ const MusicPlayer: React.FC = () => {
                         <Typography
                             variant={"h4"}>{tracks[currentTrack].artist.name}</Typography></Box>
                 }
-                <MusicPlayerControl onPlayClick={handlePlayTrack} onNextClick={handleNextTrack}
+                <MusicPlayerControl onPlayClick={handlePlayTrack}
+                                    isPlaying={isPlaying}
+                                    onPauseClick={handlePlayTrack}
+                                    onNextClick={handleNextTrack}
                                     onPreviousClick={handlePreviousTrack}/>
                 <div className="video-frame">
-                    <iframe id="audioPlayer" width="560" height="315" src={currentYoutubeURL}
-                            frameBorder="0" allow="autoplay; encrypted-media"
-                            allowFullScreen></iframe>
+                    {isPlaying && <iframe id="audioPlayer" width="560" height="315"
+                                          src={currentYoutubeURL}
+                                          frameBorder="0" allow="autoplay; encrypted-media"
+                                          allowFullScreen></iframe>}
                 </div>
-            </div>
+            </Container>
         );
     }
 ;
