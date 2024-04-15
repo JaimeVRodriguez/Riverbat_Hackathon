@@ -50,15 +50,15 @@ tasks.register('buildFrontend', Exec) {
 }
 
 tasks.register('copyFrontend', Copy) {
-    from buildFrontend.outputs
-    into "$buildDir/resources/main/static"
+    from "frontend/dist"
+    into "${project.layout.buildDirectory.get().asFile.getAbsolutePath()}/resources/main/public"
     doLast {
-        println "copied frontend artifacts to $buildDir/resources/main/static"
+        println "copied frontend artifacts to ${project.layout.buildDirectory.get().asFile.getAbsolutePath()}/resources/main/public"
     }
 }
 
 tasks.register('cleanFrontend', Delete) {
-    delete "frontend/build", "$buildDir/resources/main/static"
+    delete "frontend/build", "${project.layout.buildDirectory.get().asFile.getAbsolutePath()}/resources/main/public"
     doLast {
         println "deleted frontend artifacts"
     }
@@ -99,6 +99,7 @@ jacocoTestReport {
         xml.getRequired().set(true)
     }
 }
+
 
 flyway {
     url = 'jdbc:postgresql://localhost:5433/bridge_db'
